@@ -33,7 +33,7 @@ export function useSubscription(
   paging[id] = paging[id] || {}
 
   React.useEffect(() => {
-    let timeoutId: NodeJS.Timer | null = null
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
     let stop = false
 
     async function pollEvents(): Promise<void> {
@@ -85,7 +85,10 @@ export function useSubscription(
     pollEvents();
 
     return () => {
-      if (timeoutId != null) clearTimeout(timeoutId)
+      if (timeoutId != null) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
       stop = true
     }
   }, [contractId, topic, onEvent, id, pollInterval])
